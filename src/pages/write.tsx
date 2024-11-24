@@ -6,7 +6,9 @@ export const Write: React.FC = () => {
 
   return (
     <section>
-      <p className="text-left md:text-center">{t("write-page.lang-version")}</p>
+      <p className="text-left  bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white py-12 px-10 md:text-center">
+        {t("write-page.lang-version")}
+      </p>
     </section>
   );
 };
