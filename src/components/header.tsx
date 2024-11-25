@@ -11,6 +11,7 @@ const Header = () => {
       <nav className="hidden md:flex space-x-4">
         <Link to={"/home"}>Home</Link>
         <Link to={"/Write"}>Write</Link>
+
         <Link to={"/about"}>About</Link>
       </nav>
       <div className="flex items-center gap-4">

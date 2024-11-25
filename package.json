@@ -7,7 +7,8 @@
     "start": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "supabase": "npx supabase gen types --lang=typescript --project-id uymhruvyzphsvebxjeiw --schema public > src/supabase/supabase-types"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.2",
@@ -15,7 +16,9 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toggle": "^1.1.0",
+    "@supabase/supabase-js": "^2.46.1",
     "@tailwindcss/typography": "^0.5.15",
+    "@tanstack/react-query": "^4.36.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cva": "^0.0.0",
@@ -46,6 +49,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "supabase": "^1.223.10",
     "tailwindcss": "^3.4.15",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
