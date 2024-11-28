@@ -1,8 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import ThemeToggle from "./themeToggle";
 import LanguageSwitcher from "./languageSwitcher";
+// import { useContext } from "react";
+// import { AuthContext } from "../context";
+// import { useAuthContext } from "../context/useAuthContext";
+import { useMutation } from "@tanstack/react-query";
+import { logout } from "../supabase/auth";
+import { useAtom } from "jotai";
+import { userAtom } from "../store/auth";
 
 const Header = () => {
+  const [user] = useAtom(userAtom);
+
+  const { mutate: handleLogout } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: logout,
+  });
+
   return (
     <header className="p-4 bg-gray-800 text-white flex justify-between items-center">
       <h1 className="text-xl">
@@ -17,9 +31,18 @@ const Header = () => {
       <div className="flex items-center gap-4">
         <LanguageSwitcher />
         <ThemeToggle />
-        <Link to="/login" className="hover:underline">
-          Login
-        </Link>
+        {user ? (
+          <div className="flex gap-x-5">
+            <NavLink to="Profile">Profile</NavLink>
+            <span onClick={() => handleLogout()} className="cursor-pointer">
+              Logout
+            </span>
+          </div>
+        ) : (
+          <Link to="/login" className="hover:underline">
+            Login
+          </Link>
+        )}
       </div>
     </header>
   );

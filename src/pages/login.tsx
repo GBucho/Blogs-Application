@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Input } from "../components/ui/input";
 import React, { useState } from "react";
 import { login, register } from "../supabase/auth";
+import { useNavigate } from "react-router-dom";
 
 const AuthComponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Sign Up forms
@@ -14,17 +15,23 @@ const AuthComponent: React.FC = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const { mutate: handleRegister } = useMutation({
     mutationKey: ["register"],
     mutationFn: register,
   });
 
   const { mutate: handleLogin } = useMutation({
-    mutationKey: ["register"],
+    mutationKey: ["login"],
     mutationFn: login,
+    onSuccess: () => {
+      navigate("/home");
+    },
   });
 
-  const handleSubmitLogin = () => {
+  const handleSubmitLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     const isEmailFilled = !!loginPayload.email;
     const isPasswordFilled = !!loginPayload.password;
 
@@ -33,7 +40,8 @@ const AuthComponent: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     const isEmailFilled = !!registerPayload.email;
     const isPasswordFilled = !!registerPayload.password;
 

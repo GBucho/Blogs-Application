@@ -26,7 +26,7 @@ i18n
         },
       },
     },
-    lng: "ka", // if you're using a language detector, do not define the lng option
+    lng: "ka",
     fallbackLng: "en",
 
     interpolation: {
