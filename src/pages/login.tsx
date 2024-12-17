@@ -79,12 +79,12 @@ const AuthComponent: React.FC = () => {
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="john@example.com"
                 {...loginRegister("email", {
-                  required: t("write-page.error-message", {
-                    defaultValue: "Email is required",
+                  required: t("email-required", {
+                    defaultValue: "email-required",
                   }),
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: t("write-page.error-message", {
+                    message: t("email-pattern-message", {
                       defaultValue: "Invalid operation",
                     }),
                   },
@@ -109,18 +109,18 @@ const AuthComponent: React.FC = () => {
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
                 {...loginRegister("password", {
-                  required: t("write-page.error-message", {
+                  required: t("password-required", {
                     defaultValue: "Password is required",
                   }),
                   minLength: {
                     value: 6,
-                    message: t("write-page.error-message", {
+                    message: t("password-min-length-message", {
                       defaultValue: "Invalid operation",
                     }),
                   },
                   maxLength: {
                     value: 20,
-                    message: t("write-page.error-message", {
+                    message: t("password-max-length-message", {
                       defaultValue: "Invalid operation",
                     }),
                   },
@@ -139,7 +139,7 @@ const AuthComponent: React.FC = () => {
               Log In
             </button>
             <p className="mt-4 text-sm text-center text-gray-400">
-              Don’t have an account?{" "}
+              Don’t have an account?
               <span
                 onClick={handleToggle}
                 className="text-blue-500 hover:underline cursor-pointer"
@@ -169,12 +169,12 @@ const AuthComponent: React.FC = () => {
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="john@example.com"
                 {...signUpRegister("email", {
-                  required: t("write-page.error-message", {
+                  required: t("email-required", {
                     defaultValue: "Email is required",
                   }),
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: t("write-page.error-message", {
+                    message: t("email-pattern-message", {
                       defaultValue: "Invalid operation",
                     }),
                   },
@@ -199,18 +199,18 @@ const AuthComponent: React.FC = () => {
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
                 {...signUpRegister("password", {
-                  required: t("write-page.error-message", {
+                  required: t("password-required", {
                     defaultValue: "Password is required",
                   }),
                   minLength: {
                     value: 6,
-                    message: t("write-page.error-message", {
+                    message: t("password-min-length-message", {
                       defaultValue: "Invalid operation",
                     }),
                   },
                   maxLength: {
                     value: 20,
-                    message: t("write-page.error-message", {
+                    message: t("password-max-length-message", {
                       defaultValue: "Invalid operation",
                     }),
                   },
@@ -235,12 +235,12 @@ const AuthComponent: React.FC = () => {
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Confirm your password"
                 {...signUpRegister("confirmPassword", {
-                  required: t("write-page.error-message", {
+                  required: t("password-required", {
                     defaultValue: "Please confirm your password",
                   }),
                   validate: (value, context) =>
                     value === context.password ||
-                    t("write-page.error-message", {
+                    t("password-required", {
                       defaultValue: "Invalid operation",
                     }),
                 })}
