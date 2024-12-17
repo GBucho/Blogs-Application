@@ -1,21 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { Input } from "../components/ui/input";
 import React, { useState } from "react";
 import { login, register } from "../supabase/auth";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+type FormValues = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 const AuthComponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Sign Up forms
-  const [registerPayload, setRegisterPayload] = useState({
-    email: "",
-    password: "",
-  });
-  const [loginPayload, setLoginPayload] = useState({
-    email: "",
-    password: "",
-  });
-
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const {
+    register: loginRegister,
+    handleSubmit: handleLoginSubmit,
+    formState: { errors: loginErrors },
+  } = useForm<FormValues>();
+
+  const {
+    register: signUpRegister,
+    handleSubmit: handleSignUpSubmit,
+    formState: { errors: signUpErrors },
+  } = useForm<FormValues>();
 
   const { mutate: handleRegister } = useMutation({
     mutationKey: ["register"],
@@ -30,25 +43,14 @@ const AuthComponent: React.FC = () => {
     },
   });
 
-  const handleSubmitLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    const isEmailFilled = !!loginPayload.email;
-    const isPasswordFilled = !!loginPayload.password;
-
-    if (isEmailFilled && isPasswordFilled) {
-      handleLogin(loginPayload);
-    }
+  const onSubmitLogin = (data: any) => {
+    handleLogin(data);
   };
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    const isEmailFilled = !!registerPayload.email;
-    const isPasswordFilled = !!registerPayload.password;
-
-    if (isEmailFilled && isPasswordFilled) {
-      handleRegister(registerPayload);
-    }
+  const onSubmitRegister = (data: any) => {
+    handleRegister(data);
   };
+
   const handleToggle = () => {
     setIsLogin(!isLogin);
   };
@@ -57,7 +59,7 @@ const AuthComponent: React.FC = () => {
     <div className="flex justify-center items-center h-screen bg-gray-900">
       <div className="bg-gray-800 p-6 rounded-lg shadow-md w-80 text-white">
         {isLogin ? (
-          <form>
+          <form onSubmit={handleLoginSubmit(onSubmitLogin)}>
             <h1 className="text-2xl font-bold mb-2 text-center">
               Log in to BitBlogs
             </h1>
@@ -76,14 +78,23 @@ const AuthComponent: React.FC = () => {
                 type="email"
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="john@example.com"
-                value={loginPayload.email}
-                onChange={(e) => {
-                  setLoginPayload({
-                    email: e.target.value,
-                    password: loginPayload.password,
-                  });
-                }}
+                {...loginRegister("email", {
+                  required: t("write-page.error-message", {
+                    defaultValue: "Email is required",
+                  }),
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                  },
+                })}
               />
+              {loginErrors.email && (
+                <p className="text-red-500 text-sm">
+                  {loginErrors.email.message}
+                </p>
+              )}
             </div>
             <div className="mb-6">
               <label
@@ -97,17 +108,31 @@ const AuthComponent: React.FC = () => {
                 type="password"
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
-                value={loginPayload.password}
-                onChange={(e) => {
-                  setLoginPayload({
-                    email: loginPayload.email,
-                    password: e.target.value,
-                  });
-                }}
+                {...loginRegister("password", {
+                  required: t("write-page.error-message", {
+                    defaultValue: "Password is required",
+                  }),
+                  minLength: {
+                    value: 6,
+                    message: t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                  },
+                })}
               />
+              {loginErrors.password && (
+                <p className="text-red-500 text-sm">
+                  {loginErrors.password.message}
+                </p>
+              )}
             </div>
             <button
-              onClick={handleSubmitLogin}
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
@@ -124,7 +149,7 @@ const AuthComponent: React.FC = () => {
             </p>
           </form>
         ) : (
-          <form>
+          <form onSubmit={handleSignUpSubmit(onSubmitRegister)}>
             <h1 className="text-2xl font-bold mb-2 text-center">
               Sign Up for BitBlogs
             </h1>
@@ -143,14 +168,23 @@ const AuthComponent: React.FC = () => {
                 type="email"
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="john@example.com"
-                value={registerPayload.email}
-                onChange={(e) => {
-                  setRegisterPayload({
-                    email: e.target.value,
-                    password: registerPayload.password,
-                  });
-                }}
+                {...signUpRegister("email", {
+                  required: t("write-page.error-message", {
+                    defaultValue: "Email is required",
+                  }),
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                  },
+                })}
               />
+              {signUpErrors.email && (
+                <p className="text-red-500 text-sm">
+                  {signUpErrors.email.message}
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label
@@ -164,14 +198,29 @@ const AuthComponent: React.FC = () => {
                 type="password"
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
-                value={registerPayload.password}
-                onChange={(e) => {
-                  setRegisterPayload({
-                    email: registerPayload.email,
-                    password: e.target.value,
-                  });
-                }}
+                {...signUpRegister("password", {
+                  required: t("write-page.error-message", {
+                    defaultValue: "Password is required",
+                  }),
+                  minLength: {
+                    value: 6,
+                    message: t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                  },
+                })}
               />
+              {signUpErrors.password && (
+                <p className="text-red-500 text-sm">
+                  {signUpErrors.password.message}
+                </p>
+              )}
             </div>
             <div className="mb-6">
               <label
@@ -185,17 +234,24 @@ const AuthComponent: React.FC = () => {
                 type="password"
                 className="w-full bg-gray-900 text-sm text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Confirm your password"
-                value={registerPayload.password}
-                onChange={(e) => {
-                  setRegisterPayload({
-                    email: registerPayload.email,
-                    password: e.target.value,
-                  });
-                }}
+                {...signUpRegister("confirmPassword", {
+                  required: t("write-page.error-message", {
+                    defaultValue: "Please confirm your password",
+                  }),
+                  validate: (value, context) =>
+                    value === context.password ||
+                    t("write-page.error-message", {
+                      defaultValue: "Invalid operation",
+                    }),
+                })}
               />
+              {signUpErrors.confirmPassword && (
+                <p className="text-red-500 text-sm">
+                  {signUpErrors.confirmPassword.message}
+                </p>
+              )}
             </div>
             <button
-              onClick={handleSubmit}
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >

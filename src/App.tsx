@@ -2,16 +2,16 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Header from "./components/header";
 import Home from "./pages/home";
 import Login from "./pages/login";
-import { Write } from "./pages/write";
+
 import About from "./pages/about";
 import { useEffect } from "react";
 import { supabase } from "./supabase";
-// import { useAuthContext } from "./context/useAuthContext";
+
 import AuthGuard from "./components/route-guards/auth";
 import ProfileView from "./pages/profileView";
 import { useAtom } from "jotai";
 import { userAtom } from "./store/auth";
-// import { authAtom } from "./store/auth";
+import QuestionForm from "./pages/write";
 
 function App() {
   // const { handleSetUser } = useAuthContext();
@@ -48,8 +48,8 @@ function App() {
             </AuthGuard>
           }
         />
-        <Route path="write" element={<Write />} />
-        <Route path="profile" element={<ProfileView />} />
+        <Route path="write" element={<QuestionForm />} />
+        <Route path="/profile" element={<ProfileView />} />
         <Route path="about" element={<About />} />
       </Routes>
     </BrowserRouter>

@@ -1,1 +1,4 @@
-{ "lang-version": "You must be logged in to write a post. Login" }
+{
+  "lang-version": "You must be logged in to write a post. Login",
+  "error-message": "Invalid operation"
+}
