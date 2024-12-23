@@ -26,7 +26,12 @@ function App() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log(session);
+      if (!session) {
+        supabase.auth.signInWithPassword({
+          email: "gbuchukuri93@gmail.com",
+          password: "#Gbucho12345",
+        });
+      }
 
       setUser(session);
     });
