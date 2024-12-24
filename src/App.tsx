@@ -11,7 +11,7 @@ import AuthGuard from "./components/route-guards/auth";
 import ProfileView from "./pages/profileView";
 import { useAtom } from "jotai";
 import { userAtom } from "./store/auth";
-import QuestionForm from "./pages/write";
+import Blogs from "./pages/Blogs";
 
 function App() {
   // const { handleSetUser } = useAuthContext();
@@ -53,7 +53,7 @@ function App() {
             </AuthGuard>
           }
         />
-        <Route path="write" element={<QuestionForm />} />
+        <Route path="Blogs" element={<Blogs />} />
         <Route path="/profile" element={<ProfileView />} />
         <Route path="about" element={<About />} />
       </Routes>
